@@ -1,4 +1,4 @@
-local UI = loadstring(game:HttpGet("your-url-here"))()
+local UI = loadstring(game:HttpGet("https://github.com/deadhoes/ApexUI/blob/main/ApexUI.lua"))()
 
 local Window = UI:CreateWindow({
     Name = "Basic Window"
