@@ -1,4 +1,4 @@
-local UI = loadstring(game:HttpGet("your-url-here"))()
+local UI = loadstring(game:HttpGet("https://github.com/deadhoes/ApexUI/blob/main/ApexUI.lua"))()
 
 local CustomTheme = {
     Background = Color3.fromRGB(15, 15, 20),
