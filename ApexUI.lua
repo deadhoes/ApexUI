@@ -1,6 +1,3 @@
--- Modern UI Library for Roblox (Rayfield Style)
--- Usage: local UI = loadstring(game:HttpGet("your-url"))()
-
 local UI = {}
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
@@ -8,7 +5,6 @@ local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
 local CoreGui = game:GetService("CoreGui")
 
--- Theme Configuration
 local Theme = {
     Background = Color3.fromRGB(25, 25, 25),
     Surface = Color3.fromRGB(35, 35, 35),
@@ -28,7 +24,6 @@ local Theme = {
     }
 }
 
--- Utility Functions
 local function CreateTween(object, properties, duration)
     duration = duration or Theme.Animation.Duration
     local info = TweenInfo.new(duration, Theme.Animation.Style, Theme.Animation.Direction)
@@ -50,17 +45,14 @@ local function CreateStroke(parent, color, thickness)
     return stroke
 end
 
--- Main UI Class
 function UI:CreateWindow(props)
     props = props or {}
     
-    -- Create ScreenGui
     local screenGui = Instance.new("ScreenGui")
     screenGui.Name = props.Name or "UILibrary"
     screenGui.Parent = CoreGui
     screenGui.ResetOnSpawn = false
     
-    -- Main Frame
     local mainFrame = Instance.new("Frame")
     mainFrame.Name = "MainFrame"
     mainFrame.Size = UDim2.new(0, 500, 0, 400)
@@ -72,7 +64,6 @@ function UI:CreateWindow(props)
     CreateCorner(mainFrame)
     CreateStroke(mainFrame)
     
-    -- Title Bar
     local titleBar = Instance.new("Frame")
     titleBar.Name = "TitleBar"
     titleBar.Size = UDim2.new(1, 0, 0, 40)
@@ -82,7 +73,6 @@ function UI:CreateWindow(props)
     
     CreateCorner(titleBar)
     
-    -- Title
     local title = Instance.new("TextLabel")
     title.Name = "Title"
     title.Size = UDim2.new(1, -80, 1, 0)
@@ -95,7 +85,6 @@ function UI:CreateWindow(props)
     title.TextXAlignment = Enum.TextXAlignment.Left
     title.Parent = titleBar
     
-    -- Close Button
     local closeBtn = Instance.new("TextButton")
     closeBtn.Name = "Close"
     closeBtn.Size = UDim2.new(0, 30, 0, 30)
@@ -110,7 +99,6 @@ function UI:CreateWindow(props)
     
     CreateCorner(closeBtn, UDim.new(0, 4))
     
-    -- Tab Container
     local tabContainer = Instance.new("Frame")
     tabContainer.Name = "TabContainer"
     tabContainer.Size = UDim2.new(0, 120, 1, -40)
@@ -130,7 +118,6 @@ function UI:CreateWindow(props)
     tabPadding.PaddingRight = UDim.new(0, 5)
     tabPadding.Parent = tabContainer
     
-    -- Content Container
     local contentContainer = Instance.new("Frame")
     contentContainer.Name = "ContentContainer"
     contentContainer.Size = UDim2.new(1, -120, 1, -40)
@@ -138,7 +125,6 @@ function UI:CreateWindow(props)
     contentContainer.BackgroundTransparency = 1
     contentContainer.Parent = mainFrame
     
-    -- Window Dragging
     local dragging = false
     local dragStart = nil
     local startPos = nil
@@ -164,12 +150,10 @@ function UI:CreateWindow(props)
         end
     end)
     
-    -- Close Button Function
     closeBtn.MouseButton1Click:Connect(function()
         screenGui:Destroy()
     end)
     
-    -- Window Object
     local windowObj = {
         ScreenGui = screenGui,
         MainFrame = mainFrame,
@@ -179,7 +163,6 @@ function UI:CreateWindow(props)
         Tabs = {}
     }
     
-    -- Create Tab Function
     function windowObj:CreateTab(name, image)
         local tabButton = Instance.new("TextButton")
         tabButton.Name = name
@@ -194,7 +177,6 @@ function UI:CreateWindow(props)
         
         CreateCorner(tabButton, UDim.new(0, 6))
         
-        -- Tab Content
         local tabContent = Instance.new("ScrollingFrame")
         tabContent.Name = name .. "Content"
         tabContent.Size = UDim2.new(1, 0, 1, 0)
@@ -214,30 +196,25 @@ function UI:CreateWindow(props)
         contentPadding.PaddingAll = UDim.new(0, 10)
         contentPadding.Parent = tabContent
         
-        -- Tab Selection
         tabButton.MouseButton1Click:Connect(function()
-            -- Hide all tabs
             for _, tab in pairs(self.Tabs) do
                 tab.Content.Visible = false
                 tab.Button.BackgroundColor3 = Theme.Secondary
                 tab.Button.TextColor3 = Theme.TextSecondary
             end
             
-            -- Show selected tab
             tabContent.Visible = true
             tabButton.BackgroundColor3 = Theme.Primary
             tabButton.TextColor3 = Theme.Text
             self.CurrentTab = name
         end)
         
-        -- Tab Object
         local tabObj = {
             Button = tabButton,
             Content = tabContent,
             Name = name
         }
         
-        -- Create Section Function
         function tabObj:CreateSection(name)
             local sectionLabel = Instance.new("TextLabel")
             sectionLabel.Name = name
@@ -253,7 +230,6 @@ function UI:CreateWindow(props)
             return sectionLabel
         end
         
-        -- Create Button Function
         function tabObj:CreateButton(props)
             local buttonFrame = Instance.new("Frame")
             buttonFrame.Size = UDim2.new(1, 0, 0, 35)
@@ -272,7 +248,6 @@ function UI:CreateWindow(props)
             
             CreateCorner(button)
             
-            -- Hover Effects
             button.MouseEnter:Connect(function()
                 CreateTween(button, {BackgroundColor3 = Theme.Primary}):Play()
             end)
@@ -288,7 +263,6 @@ function UI:CreateWindow(props)
             return button
         end
         
-        -- Create Slider Function
         function tabObj:CreateSlider(props)
             local sliderFrame = Instance.new("Frame")
             sliderFrame.Size = UDim2.new(1, 0, 0, 50)
@@ -388,7 +362,6 @@ function UI:CreateWindow(props)
             }
         end
         
-        -- Create Dropdown Function
         function tabObj:CreateDropdown(props)
             local dropdownFrame = Instance.new("Frame")
             dropdownFrame.Size = UDim2.new(1, 0, 0, 35)
@@ -505,7 +478,6 @@ function UI:CreateWindow(props)
         
         self.Tabs[name] = tabObj
         
-        -- Auto-select first tab
         if not self.CurrentTab then
             tabButton.MouseButton1Click:Fire()
         end
@@ -516,7 +488,6 @@ function UI:CreateWindow(props)
     return windowObj
 end
 
--- Notification Function
 function UI:Notify(props)
     props = props or {}
     
@@ -554,10 +525,8 @@ function UI:Notify(props)
     content.TextWrapped = true
     content.Parent = notification
     
-    -- Slide in animation
     CreateTween(notification, {Position = UDim2.new(1, -320, 0, 20)}):Play()
     
-    -- Auto dismiss
     wait(props.Duration or 5)
     CreateTween(notification, {Position = UDim2.new(1, 0, 0, 20)}):Play()
     wait(0.3)
