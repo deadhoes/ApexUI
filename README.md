@@ -1,174 +1,143 @@
 
-# 🎨 ApexUI
+# 🌟 Modern UI Library for Roblox (Rayfield Style)
 
-ApexUI is a modern and sleek UI library for Roblox, featuring buttery smooth animations and professional-grade components – perfect for developers seeking both performance and aesthetics.
+A powerful, modern, and customizable UI library built for Roblox developers. This library comes with sleek components, smooth animations, and a clean theme – inspired by Rayfield.
 
 ---
 
-## ⚡ Quick Start
+## 🚀 Getting Started
+
+To get started, simply include the library using:
 
 ```lua
-local ApexUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/deadhoes/ApexUI/main/ApexUI.lua"))()
+local UI = loadstring(game:HttpGet("your-url"))()
 ```
 
 ---
 
-## 🚀 Features
+## 🎨 Theme & Style
 
-- ✨ Smooth TweenService animations  
-- 🎨 Modern dark theme with customizable colors  
-- 🪟 Professional window system  
-- 🎛️ Full component library  
-- 📦 Single-file loadstring usage  
-- 🖱️ Hover effects & transitions  
-- 📱 Intuitive and responsive layout  
+This UI framework includes a modern dark theme:
+- **Background:** #191919
+- **Primary Color:** Blue (#409CFF)
+- **Success/Warning/Error:** Green, Orange, Red
+- **Rounded Corners & Smooth Transitions**
 
 ---
 
-## 🧱 Components
+## 🪟 `UI:CreateWindow(props)`
 
-### 🪟 Window Component
+Creates a draggable main window with title bar and tab support.
 
+### `props` table:
+- `Name`: (string) Name of the window
+
+### Example:
 ```lua
-local window = ApexUI:Window({
-    title = "My Window",
-    size = UDim2.new(0, 400, 0, 300)
-})
+local window = UI:CreateWindow({ Name = "My UI" })
 ```
 
 ---
 
-### 🔘 Button Component
+## 📑 Tabs
+
+### `window:CreateTab(name)`
+Creates a new tab in the sidebar.
 
 ```lua
-local button = ApexUI:Button({
-    parent = window.Content,
-    text = "Click Me",
-    size = UDim2.new(0, 150, 0, 35),
-    position = UDim2.new(0, 10, 0, 10),
-    color = Color3.fromRGB(64, 156, 255),
-    onClick = function()
-        print("Button clicked!")
+local tab = window:CreateTab("Main")
+```
+
+---
+
+## 🧩 Components
+
+### 🔘 Buttons
+
+```lua
+tab:CreateButton({
+    Name = "Click Me",
+    Callback = function()
+        print("Button Clicked!")
     end
 })
 ```
 
 ---
 
-### 📋 Dropdown Component
+### 🎚️ Slider
 
 ```lua
-local dropdown = ApexUI:Dropdown({
-    parent = window.Content,
-    placeholder = "Select...",
-    size = UDim2.new(0, 200, 0, 32),
-    position = UDim2.new(0, 10, 0, 50),
-    options = {"Option A", "Option B", "Option C"},
-    onSelect = function(option, index)
-        print("Selected:", option)
+tab:CreateSlider({
+    Name = "Volume",
+    Range = {0, 100},
+    CurrentValue = 50,
+    Suffix = "%",
+    Callback = function(value)
+        print("Slider:", value)
     end
 })
 ```
 
 ---
 
-### 🔄 Toggle Component
+### 📋 Dropdown
 
 ```lua
-local toggle = ApexUI:Toggle({
-    parent = window.Content,
-    position = UDim2.new(0, 10, 0, 90),
-    default = true,
-    onToggle = function(state)
-        print("Toggle state:", state)
+tab:CreateDropdown({
+    CurrentOption = {"Option 1"},
+    Options = {"Option 1", "Option 2", "Option 3"},
+    Callback = function(selected)
+        print("Selected:", selected)
     end
 })
 ```
 
 ---
 
-### ☑️ Checkbox Component
+### 📂 Sections
 
 ```lua
-local checkbox = ApexUI:Checkbox({
-    parent = window.Content,
-    position = UDim2.new(0, 10, 0, 130),
-    label = "I agree to the Terms",
-    default = false,
-    onChange = function(checked)
-        print("Checked:", checked)
-    end
+tab:CreateSection("Settings")
+```
+
+---
+
+## 🔔 `UI:Notify(props)`
+
+Creates a temporary notification.
+
+### `props` table:
+- `Title`: (string) The notification title
+- `Content`: (string) The message content
+- `Duration`: (number) Duration in seconds
+
+### Example:
+```lua
+UI:Notify({
+    Title = "Success!",
+    Content = "Your action was completed.",
+    Duration = 3
 })
 ```
 
 ---
 
-### 🎚️ Slider Component
+## 📦 Return Object
 
-```lua
-local slider = ApexUI:Slider({
-    parent = window.Content,
-    size = UDim2.new(0, 250, 0, 20),
-    position = UDim2.new(0, 10, 0, 170),
-    min = 0,
-    max = 100,
-    default = 50,
-    onChange = function(value)
-        print("Slider value:", value)
-    end
-})
-```
-
----
-
-## 🧪 Full Example
-
-```lua
-local ApexUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/deadhoes/ApexUI/main/ApexUI.lua"))()
-
-local window = ApexUI:Window({
-    title = "Demo UI",
-    size = UDim2.new(0, 450, 0, 500),
-    position = UDim2.new(0.5, -225, 0.5, -250)
-})
-
-ApexUI:Button({
-    parent = window.Content,
-    text = "Apply",
-    size = UDim2.new(0, 120, 0, 35),
-    position = UDim2.new(0, 20, 1, -50),
-    color = Color3.fromRGB(76, 175, 80),
-    onClick = function()
-        print("Applied!")
-    end
-})
-
-ApexUI:Button({
-    parent = window.Content,
-    text = "Cancel",
-    size = UDim2.new(0, 100, 0, 35),
-    position = UDim2.new(0, 150, 1, -50),
-    color = Color3.fromRGB(244, 67, 54),
-    onClick = function()
-        window.Frame:Destroy()
-    end
-})
-```
+Each window and tab returns an object with utility functions like:
+- `SetValue` / `GetValue` for sliders
+- Callback binding for dropdowns/buttons
 
 ---
 
 ## 📄 License
 
-**MIT License** – Free to use, modify, and share.
+MIT License – Free to use, modify, and distribute.
 
 ---
 
-## 🤝 Contributing
+## 💡 Tip
 
-Want to improve ApexUI? Pull requests are welcome!
+Drag the window using the top bar, and click tabs to switch views. Smooth transitions and hover effects are built-in.
 
----
-
-## ⭐ Support
-
-If you find ApexUI helpful, leave a ⭐ on GitHub!
